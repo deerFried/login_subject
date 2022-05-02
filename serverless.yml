@@ -9,18 +9,8 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:BatchGetItem
-        - dynamodb:BatchWriteItem
-        - dynamodb:ConditionCheckItem
-        - dynamodb:DeleteItem
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:UpdateItem
-      Resource:
-        - !GetAtt TodoListTable.Arn
-        - !GetAtt TodoListItem.Arn
+        - dynamodb:*
+      Resource: "*"
 
 plugins:
   - serverless-prune-plugin
@@ -42,11 +32,6 @@ functions:
       - http:
           path: /{proxy+}
           method: any
-
-  cron:
-    timeout: 30
-    memorySize: 256
-    handler: cron.handler
 
 resources:
   Resources:
