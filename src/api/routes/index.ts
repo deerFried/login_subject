@@ -1,3 +1,9 @@
 import { Routes } from "@serverless-seoul/corgi";
 
-export const routes: Routes = [];
+import { route as phoneAuthenticationRoute } from "./phone_authentication";
+import { route as userRoute } from "./user";
+
+export const routes: Routes = [
+  userRoute,
+  phoneAuthenticationRoute,
+];

@@ -6,12 +6,12 @@ import { PhoneAuthentication } from "../models";
 export class PhoneAuthenticationService {
   public static async create(phone: string) {
     const expiresAt = moment().add(3, "minutes").valueOf();
-    const authentication = await PhoneAuthentication.create({
+    await PhoneAuthentication.create({
       phone, key: this.generateKey(), expiresAt,
     });
     // TODO: Send SMS to use external service
 
-    return authentication;
+    return true;
   }
 
   public static async verify(phone: string, key: string) {
@@ -36,11 +36,22 @@ export class PhoneAuthenticationService {
     }
 
     const expiresAt = moment().add(5, "minutes").valueOf();
+    await authentication.updateToVerfiy(expiresAt);
 
-    return await authentication.verfiy(expiresAt);
+    return true;
   }
 
-  public static isVerify(authentication: PhoneAuthentication) {
+  public static async getVerified(phone: string) {
+    const authentication = await PhoneAuthentication.primaryKey.get(phone);
+
+    if (!authentication || !this.isVerify(authentication)) {
+      return null;
+    }
+
+    return authentication;
+  }
+
+  private static isVerify(authentication: PhoneAuthentication) {
     return !this.isExpired(authentication) && authentication.isVerify;
   }
 

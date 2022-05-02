@@ -35,7 +35,7 @@ export class PhoneAuthentication extends Table {
   @Decorator.Attribute({ name: "e_a" })
   public expiresAt!: number;
 
-  public async verfiy(expiresAt: number) {
+  public async updateToVerfiy(expiresAt: number) {
     this.isVerify = true;
     this.expiresAt = expiresAt;
 

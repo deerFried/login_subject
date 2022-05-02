@@ -13,7 +13,7 @@ export function createResolver(routes: Routes) {
     body?: string,
   ) {
     const router = new Router([
-      new Namespace("", {
+      new Namespace("", {}, {
         children: routes,
       }),
     ], {});
@@ -24,10 +24,16 @@ export function createResolver(routes: Routes) {
       path,
       queryStringParameters,
       body,
-    }, { timeout: 1000 });
+    } as any, { timeout: 1000 });
   };
 
   return resolver;
+}
+
+// Helper for rejection testing
+export function toJS<R, E = Error>(promise: Promise<R>): Promise<[null, R] | [E, null]> {
+  return promise.then((v) => [null, v] as [null, R])
+    .catch((e) => [e, null] as [E, null]);
 }
 
 import * as Sinon from "sinon";

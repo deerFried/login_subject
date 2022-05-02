@@ -18,9 +18,7 @@ export const route = new Namespace(
             name: Type.String(),
             phone: Type.String({ minLength: 10, maxLength: 11 }),
           })),
-        }, Presenters.SuccessShow, async function() {
-          const userInfo = this.params;
-
+        }, Presenters.SuccessShow, async () => {
           // console.log(userInfo);
 
           return true;
