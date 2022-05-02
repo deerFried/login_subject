@@ -146,7 +146,7 @@ describe(PhoneAuthenticationService.name, () => {
           });
         });
 
-        it("should return true", async () => {
+        it("should return null", async () => {
           const res = await PhoneAuthenticationService.getVerified(phone);
 
           expect(res).to.be.eq(null);
