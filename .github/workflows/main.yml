@@ -21,6 +21,8 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm run test:ci
+        env:
+          DYNAMO_TYPES_ENDPOINT: http://dynamodb:8000
   #     - name: Deploy
   #       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
   #       run: |
