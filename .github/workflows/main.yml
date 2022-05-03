@@ -3,7 +3,7 @@ on: push
 jobs:
   job:
     runs-on: ubuntu-latest
-    container: catchfashion/microservice-ci:node12
+    container: catchfashion/microservice-ci:node14
     timeout-minutes: 15
     services:
       dynamodb:
@@ -16,11 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Prepare
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          npm ci
+        run: npm ci
       - name: Lint
         run: npm run lint
       - name: Test
