@@ -20,6 +20,7 @@ export class User extends Table {
     email: string;
     name: string;
     password: string;
+    passwordSalt: string;
     phone: string;
   }) {
     const model = new this();
@@ -28,7 +29,8 @@ export class User extends Table {
     model.username = attributes.username;
     model.email = attributes.email;
     model.name = attributes.name;
-    model.password = attributes.username;
+    model.password = attributes.password;
+    model.passwordSalt = attributes.passwordSalt;
     model.phone = attributes.phone;
 
     await model.save();
@@ -63,6 +65,18 @@ export class User extends Table {
   @Decorator.Attribute({ name: "pwd" })
   public password!: string;
 
+  @Decorator.Attribute({ name: "pwd_s" })
+  public passwordSalt!: string;
+
   @Decorator.Attribute({ name: "p" })
   public phone!: string;
+
+  public async updatePassword(password: string, passwordSalt: string) {
+    this.password = password;
+    this.passwordSalt = passwordSalt;
+
+    await this.save();
+
+    return this;
+  }
 }

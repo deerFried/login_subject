@@ -1,33 +1,30 @@
 name: CI
 on: push
 jobs:
-  # job:
-  #   runs-on: ubuntu-latest
-  #   container: catchfashion/microservice-ci:node12
-  #   timeout-minutes: 15
-  #   services:
-  #     dynamodb:
-  #       image: amazon/dynamodb-local
-  #       options: >-
-  #         --health-cmd "curl --fail -X POST http://127.0.0.1:8000 -H 'Accept-Encoding: identity' -H 'Authorization: AWS4-HMAC-SHA256 Credential=AKIAXXXXXXXXXXXXXXXX/20190505/ap-southeast-2/dynamodb/aws4_request, SignedHeaders=accept-encoding;cache-control;content-type;user-agent;x-amz-date;x-amz-target, Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' -H 'Content-Type: application/json' -H 'User-Agent: postman' -H 'X-Amz-Date: 20190505T235951Z' -H 'X-Amz-Target: DynamoDB_20120810.ListTables' -H 'cache-control: no-cache' -d '{}' || exit 1"
-  #         --health-interval 10s
-  #         --health-timeout 5s
-  #         --health-retries 5
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: Prepare
-  #       env:
-  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  #       run: |
-  #         echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-  #         npm ci
-  #     - name: Lint
-  #       run: npm run lint
-  #     - name: Test
-  #       run: npm run test:ci
-  #       env:
-  #         REDIS_URL: redis://redis:6379/10
-  #         AFFILIATE_MYSQL_DB_URL: mysql://catch:password@mysql:3306/catch
+  job:
+    runs-on: ubuntu-latest
+    container: catchfashion/microservice-ci:node12
+    timeout-minutes: 15
+    services:
+      dynamodb:
+        image: amazon/dynamodb-local
+        options: >-
+          --health-cmd "curl --fail -X POST http://127.0.0.1:8000 -H 'Accept-Encoding: identity' -H 'Authorization: AWS4-HMAC-SHA256 Credential=AKIAXXXXXXXXXXXXXXXX/20190505/ap-southeast-2/dynamodb/aws4_request, SignedHeaders=accept-encoding;cache-control;content-type;user-agent;x-amz-date;x-amz-target, Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' -H 'Content-Type: application/json' -H 'User-Agent: postman' -H 'X-Amz-Date: 20190505T235951Z' -H 'X-Amz-Target: DynamoDB_20120810.ListTables' -H 'cache-control: no-cache' -d '{}' || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v1
+      - name: Prepare
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test:ci
   #     - name: Deploy
   #       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
   #       run: |

@@ -5,6 +5,8 @@ import { PhoneAuthenticationService } from "../../services/phone_authentication"
 
 import * as Presenters from "../presenters";
 
+import { Phone } from "./type";
+
 export const route = new Namespace(
   "/phone_authentication", {}, {
     children: [
@@ -13,22 +15,21 @@ export const route = new Namespace(
           desc: "Create phone authentication",
           operationId: "createPhoneAuthentication",
         }, {
-          phone: Parameter.Body(Type.String({ minLength: 10, maxLength: 11 })),
+          phone: Parameter.Body(Phone),
         }, Presenters.SuccessShow, async function() {
           const { phone } = this.params;
 
           await PhoneAuthenticationService.create(phone);
 
           return true;
-        },
-      ),
+        }),
 
       PresenterRouteFactory.POST(
         "/verify", {
           desc: "Verify phone authentication",
           operationId: "verifyPhoneAuthentication",
         }, {
-          phone: Parameter.Body(Type.String({ minLength: 10, maxLength: 11 })),
+          phone: Parameter.Body(Phone),
           key: Parameter.Body(Type.String()),
         }, Presenters.SuccessShow, async function() {
           const { phone, key } = this.params;
@@ -36,8 +37,7 @@ export const route = new Namespace(
           await PhoneAuthenticationService.verify(phone, key);
 
           return true;
-        },
-      ),
+        }),
     ],
   },
 );
