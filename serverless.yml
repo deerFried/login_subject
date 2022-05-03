@@ -3,7 +3,7 @@ service: serverless-app-boilerplate
 provider:
   name: aws
   region: ap-northeast-2
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   stage: ${opt:stage, 'stage'}
   environment: ${file(./env/${self:provider.stage}.yml)}
   iamRoleStatements:
@@ -32,35 +32,3 @@ functions:
       - http:
           path: /{proxy+}
           method: any
-
-resources:
-  Resources:
-    TodoListTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        # Align below properties with src/models/todo_list.ts
-        TableName: ${self:provider.stage}_todo_list
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-
-    TodoListItem:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        # Align below properties with src/models/todo_item.ts
-        TableName: ${self:provider.stage}_todo_item
-        AttributeDefinitions:
-          - AttributeName: listId
-            AttributeType: S
-          - AttributeName: itemId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: listId
-            KeyType: HASH
-          - AttributeName: itemId
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
