@@ -15,9 +15,6 @@ Build entities schema for open-api spec, also build TSC
 
 ## npm run lint
 
-## npm run run-local:api
-this run vingle-corgi locally, by simulating the behavior of API Gateway with express
-
 ## npm run deploy
 npm run deploy:stage
 npm run deploy:prod
