@@ -73,7 +73,7 @@ describe(UserService.name, () => {
           .callsFake(({ id }) => id);
       });
 
-      it("should create model and return token", async () => {
+      it("should create model and return token and call authenticationService delete function", async () => {
         const res = await UserService.create(mockUserInfo);
 
         const createdModel = (await User.getByEmail(mockUserInfo.email))!;
@@ -230,7 +230,8 @@ describe(UserService.name, () => {
             .callsFake(() => mockNewPasswordSalt);
         });
 
-        it("should be return true and update password, passwordSalt", async () => {
+        // tslint:disable-next-line
+        it("should be return true and update password, passwordSalt and call authenticationService delete function", async () => {
           const res = await UserService.resetPassword(mockPhone, mockNewPassword);
 
           const model = (await User.getByPhone(mockPhone))!;
