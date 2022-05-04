@@ -16,12 +16,10 @@ export const route = new Namespace(
           operationId: "createPhoneAuthentication",
         }, {
           phone: Parameter.Body(Phone),
-        }, Presenters.SuccessShow, async function() {
+        }, Presenters.AuthenticationShow, async function() {
           const { phone } = this.params;
 
-          await PhoneAuthenticationService.create(phone);
-
-          return true;
+          return await PhoneAuthenticationService.create(phone);
         }),
 
       PresenterRouteFactory.POST(

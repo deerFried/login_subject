@@ -6,12 +6,13 @@ import { PhoneAuthentication } from "../models";
 export class PhoneAuthenticationService {
   public static async create(phone: string) {
     const expiresAt = moment().add(3, "minutes").valueOf();
-    await PhoneAuthentication.create({
+    const authentication = await PhoneAuthentication.create({
       phone, key: this.generateKey(), expiresAt,
     });
     // TODO: Send SMS to use external service
 
-    return true;
+    // TODO: Return true
+    return authentication.key;
   }
 
   public static async verify(phone: string, key: string) {

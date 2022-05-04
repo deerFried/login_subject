@@ -15,9 +15,11 @@ describe("PhoneAuthentication Routes", () => {
   let phoneAuthenticationStub: Sinon.SinonStub;
 
   describe("#createPhoneAuthentication", () => {
+    const mockKey = "test-key";
+
     beforeEach(() => {
       phoneAuthenticationStub = sandbox.stub(PhoneAuthenticationService, "create")
-        .callsFake(async () => true);
+        .callsFake(async () => mockKey);
     });
 
     it("should return success true", async () => {
@@ -27,7 +29,7 @@ describe("PhoneAuthentication Routes", () => {
 
       expect(res.statusCode).to.be.eq(200);
       expect(JSON.parse(res.body)).to.be.deep.eq(
-        await Presenters.SuccessShow.present(true),
+        await Presenters.AuthenticationShow.present(mockKey),
       );
       expect(phoneAuthenticationStub.callCount).to.be.eq(1);
     });

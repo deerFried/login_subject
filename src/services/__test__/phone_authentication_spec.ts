@@ -14,7 +14,7 @@ describe(PhoneAuthenticationService.name, () => {
 
   describe(".create", () => {
     it("should be create PhoneAuthentication model", async () => {
-      await PhoneAuthenticationService.create(phone);
+      const res = await PhoneAuthenticationService.create(phone);
 
       const model = await PhoneAuthentication.primaryKey.get(phone);
 
@@ -22,6 +22,9 @@ describe(PhoneAuthenticationService.name, () => {
       const typeCheckedModel = model!;
       expect(typeCheckedModel.phone).to.be.eq(phone);
       expect(typeCheckedModel.key.length).to.be.eq(6);
+      // TODO: Remove after send SMS
+      expect(typeCheckedModel.key).to.be.eq(res);
+      //
       expect(typeCheckedModel.expiresAt).to.be.lessThan(
         moment().add(3, "minutes").valueOf(),
       );
