@@ -175,4 +175,21 @@ describe(PhoneAuthenticationService.name, () => {
       });
     });
   });
+
+  describe(".delete", () => {
+    let testModel: PhoneAuthentication;
+
+    beforeEach(async () => {
+      testModel = await PhoneAuthentication.create({
+        phone: "test-phone", key: "test-key", expiresAt: 1,
+      });
+    });
+
+    it("should be delete authentication model", async () => {
+      await PhoneAuthenticationService.delete(testModel);
+
+      const model = await PhoneAuthentication.primaryKey.get(testModel.phone);
+      expect(model).to.be.eq(null);
+    });
+  });
 });

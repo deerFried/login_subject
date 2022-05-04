@@ -52,6 +52,12 @@ export class PhoneAuthenticationService {
     return authentication;
   }
 
+  public static async delete(authentication: PhoneAuthentication) {
+    await authentication.delete();
+
+    return true;
+  }
+
   private static isVerify(authentication: PhoneAuthentication) {
     return !this.isExpired(authentication) && authentication.isVerify;
   }

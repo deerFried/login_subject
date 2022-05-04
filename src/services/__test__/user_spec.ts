@@ -1,5 +1,6 @@
 import { StandardError } from "@serverless-seoul/corgi";
 import { expect } from "chai";
+import * as Sinon from "sinon";
 import { PhoneAuthentication, User } from "../../models";
 
 import { sandbox, toJS } from "../../__test__/helpers";
@@ -61,9 +62,13 @@ describe(UserService.name, () => {
     });
 
     context("when everything is ok", () => {
+      let authenticationServiceStub: Sinon.SinonStub;
+
       beforeEach(async () => {
         sandbox.stub(PhoneAuthenticationService, "getVerified")
-          .callsFake(async () => new PhoneAuthentication());
+        .callsFake(async () => new PhoneAuthentication());
+        authenticationServiceStub = sandbox.stub(PhoneAuthenticationService, "delete")
+          .callsFake(async () => true);
         sandbox.stub(AuthService, "createToken")
           .callsFake(({ id }) => id);
       });
@@ -73,6 +78,7 @@ describe(UserService.name, () => {
 
         const createdModel = (await User.getByEmail(mockUserInfo.email))!;
         expect(createdModel.id).to.be.eq(res);
+        expect(authenticationServiceStub.callCount).to.be.eq(1);
       });
     });
   });
@@ -205,6 +211,7 @@ describe(UserService.name, () => {
 
       context("when user is exists", () => {
         const mockNewPasswordSalt = "test-new-password-salt";
+        let authenticationServiceStub: Sinon.SinonStub;
 
         beforeEach(async () => {
           await User.create({
@@ -215,6 +222,8 @@ describe(UserService.name, () => {
             phone: mockPhone,
             passwordSalt: "test-password-salt",
           });
+          authenticationServiceStub = sandbox.stub(PhoneAuthenticationService, "delete")
+            .callsFake(async () => true);
           sandbox.stub(UserService as any, "createHashedPassword")
             .callsFake(() => mockNewPassword);
           sandbox.stub(UserService as any, "createPasswordSalt")
@@ -228,6 +237,7 @@ describe(UserService.name, () => {
           expect(res).to.be.eq(true);
           expect(model.password).to.be.eq(mockNewPassword);
           expect(model.passwordSalt).to.be.eq(mockNewPasswordSalt);
+          expect(authenticationServiceStub.callCount).to.be.eq(1);
         });
       });
     });

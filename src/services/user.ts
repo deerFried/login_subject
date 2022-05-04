@@ -34,6 +34,7 @@ export class UserService {
     const model = await User.create({
       username, email, name, password: hashedPassword, passwordSalt, phone,
     });
+    await PhoneAuthenticationService.delete(authentication);
 
     return AuthService.createToken({ id: model.id });
   }
@@ -74,6 +75,7 @@ export class UserService {
     const passwordSalt = this.createPasswordSalt();
     const hashedPassword = this.createHashedPassword(password, passwordSalt);
     await user.updatePassword(hashedPassword, passwordSalt);
+    await PhoneAuthenticationService.delete(authentication);
 
     return true;
   }
